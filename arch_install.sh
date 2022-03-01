@@ -31,12 +31,12 @@ exit
 printf '\033c'
 pacman -S --noconfirm sed
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
-ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+ln -sf /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
 hwclock --systohc
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
-echo "KEYMAP=us" > /etc/vconsole.conf
+echo "KEYMAP=sv-latin1" > /etc/vconsole.conf
 echo "Hostname: "
 read hostname
 echo $hostname > /etc/hostname

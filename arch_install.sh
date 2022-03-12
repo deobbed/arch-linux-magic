@@ -1,7 +1,7 @@
 # == MY ARCH SETUP INSTALLER == #
 #part1
 printf '\033c'
-echo "Welcome to bugswriter's arch installer script"
+echo "Welcome to deobbed's arch installer script"
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
@@ -10,12 +10,12 @@ lsblk
 echo "Enter the drive: "
 read drive
 cfdisk $drive 
-echo "Enter the linux partition: "
+echo "Enter the linux partition,/dev/...: "
 read partition
 mkfs.ext4 $partition 
 read -p "Did you also create efi partition? [y/n]" answer
 if [[ $answer = y ]] ; then
-  echo "Enter EFI partition: "
+  echo "Enter EFI partition,/dev/...: "
   read efipartition
   mkfs.vfat -F 32 $efipartition
 fi
@@ -36,7 +36,7 @@ hwclock --systohc
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
-echo "KEYMAP=sv-latin1" > /etc/vconsole.conf
+echo "KEYMAP=fi" > /etc/vconsole.conf
 echo "Hostname: "
 read hostname
 echo $hostname > /etc/hostname
@@ -46,7 +46,7 @@ echo "127.0.1.1       $hostname.localdomain $hostname" >> /etc/hosts
 mkinitcpio -P
 passwd
 pacman --noconfirm -S grub efibootmgr os-prober
-echo "Enter EFI partition: " 
+echo "Enter EFI partition,/dev/...: " 
 read efipartition
 mkdir /boot/efi
 mount $efipartition /boot/efi 
@@ -64,9 +64,12 @@ pacman -S --noconfirm xorg-server xorg-xinit xorg-xkill xorg-xsetroot xorg-xback
      vim emacs arc-gtk-theme rsync firefox dash \
      xcompmgr libnotify dunst slock jq \
      dhcpcd networkmanager rsync pamixer \
-     zsh-syntax-highlighting xdg-user-dirs
+     zsh-syntax-highlighting xdg-user-dirs \
+     playerctl nvidia nvidia-settings keepassxc \
+     pcscd spotify
 
 systemctl enable NetworkManager.service 
+systemctl enable pcscd.service
 rm /bin/sh
 ln -s dash /bin/sh
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -85,14 +88,14 @@ exit
 #part3
 printf '\033c'
 cd $HOME
-git clone --separate-git-dir=$HOME/.dotfiles https://github.com/bugswriter/dotfiles.git tmpdotfiles
+git clone --separate-git-dir=$HOME/.dotfiles https://github.com/deobbed/dotfiles.git tmpdotfiles
 rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
 rm -r tmpdotfiles
-git clone --depth=1 https://github.com/Bugswriter/dwm.git ~/.local/src/dwm
+git clone --depth=1 https://github.com/deobbed/dwm.git ~/.local/src/dwm
 sudo make -C ~/.local/src/dwm install
-git clone --depth=1 https://github.com/Bugswriter/st.git ~/.local/src/st
+git clone --depth=1 https://github.com/deobbed/st.git ~/.local/src/st
 sudo make -C ~/.local/src/st install
-git clone --depth=1 https://github.com/Bugswriter/dmenu.git ~/.local/src/dmenu
+git clone --depth=1 https://github.com/deobbed/dmenu.git ~/.local/src/dmenu
 sudo make -C ~/.local/src/dmenu install
 git clone --depth=1  https://aur.archlinux.org/paru.git ~/.local/src/paru
 cd ~/.local/src/paru

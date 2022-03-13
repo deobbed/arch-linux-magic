@@ -102,6 +102,7 @@ cd ~/.local/src/paru
 makepkg -si
 cd
 paru -S libxft-bgra-git
+paru -S yubikey-oath-dmenu
 
 ln -s ~/.config/x11/xinitrc .xinitrc
 ln -s ~/.config/shell/profile .zprofile
